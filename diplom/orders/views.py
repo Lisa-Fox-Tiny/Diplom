@@ -1,4 +1,4 @@
-from distutils.util import strtobool
+# from distutils.util import strtobool
 from rest_framework.request import Request
 from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
@@ -14,6 +14,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from ujson import loads as load_json
 from yaml import load as load_yaml, Loader
+from drf_spectacular.utils import extend_schema
+from .throttles import AllThrottle
 
 
 from orders.models import Shop, Category, Product, ProductInfo, Parameter, ProductParameter, Order, OrderItem, \
@@ -31,7 +33,7 @@ class RegisterAccount(APIView):
     """
     Для регистрации покупателей
     """
-
+    throttle_classes = [AllThrottle]
     # Регистрация методом POST
 
     def post(self, request, *args, **kwargs):
@@ -77,7 +79,7 @@ class ConfirmAccount(APIView):
     """
     Класс для подтверждения почтового адреса
     """
-
+    throttle_classes = [AllThrottle]
     # Регистрация методом POST
     def post(self, request, *args, **kwargs):
         """
@@ -116,7 +118,7 @@ class AccountDetails(APIView):
     Attributes:
     - None
     """
-
+    throttle_classes = [AllThrottle]
     # получить данные
     def get(self, request: Request, *args, **kwargs):
         """
@@ -176,6 +178,7 @@ class LoginAccount(APIView):
     """
     Класс для авторизации пользователей
     """
+    throttle_classes = [AllThrottle]
 
     # Авторизация методом POST
     def post(self, request, *args, **kwargs):
@@ -206,6 +209,8 @@ class CategoryView(ListAPIView):
     """
     Класс для просмотра категорий
     """
+    throttle_classes = [AllThrottle]
+
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
@@ -228,6 +233,7 @@ class ProductInfoView(APIView):
         Attributes:
         - None
         """
+    throttle_classes = [AllThrottle]
 
     def get(self, request: Request, *args, **kwargs):
         """
@@ -273,6 +279,7 @@ class BasketView(APIView):
     Attributes:
     - None
     """
+    throttle_classes = [AllThrottle]
 
     # получить корзину
     def get(self, request, *args, **kwargs):
@@ -409,6 +416,7 @@ class PartnerUpdate(APIView):
     Attributes:
     - None
     """
+    throttle_classes = [AllThrottle]
 
     def post(self, request, *args, **kwargs):
         """
@@ -475,7 +483,7 @@ class PartnerState(APIView):
        Attributes:
        - None
        """
-
+    throttle_classes = [AllThrottle]
     # получить текущий статус
     def get(self, request, *args, **kwargs):
         """
@@ -533,7 +541,7 @@ class PartnerOrders(APIView):
     Attributes:
     - None
     """
-
+    throttle_classes = [AllThrottle]
     def get(self, request, *args, **kwargs):
         """
                Retrieve the orders associated with the authenticated partner.
@@ -573,8 +581,12 @@ class ContactView(APIView):
        Attributes:
        - None
        """
-
+    throttle_classes = [AllThrottle]
     # получить мои контакты
+    @extend_schema(
+        description="Retrieve the contact information of the authenticated user.",
+        responses={200: ContactSerializer(many=True)}
+    )
     def get(self, request, *args, **kwargs):
         """
                Retrieve the contact information of the authenticated user.
@@ -593,6 +605,10 @@ class ContactView(APIView):
         return Response(serializer.data)
 
     # добавить новый контакт
+    @extend_schema(
+        description="Create a new contact for the authenticated user.",
+        responses={200: None}
+    )
     def post(self, request, *args, **kwargs):
         """
                Create a new contact for the authenticated user.
@@ -620,6 +636,10 @@ class ContactView(APIView):
         return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
 
     # удалить контакт
+    @extend_schema(
+        description="Delete the contact of the authenticated user.",
+        responses={200: None}
+    )
     def delete(self, request, *args, **kwargs):
         """
                Delete the contact of the authenticated user.
@@ -649,6 +669,10 @@ class ContactView(APIView):
         return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
 
     # редактировать контакт
+    @extend_schema(
+        description="Update the contact information of the authenticated user.",
+        responses={200: None}
+    )
     def put(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             """
@@ -689,8 +713,12 @@ class OrderView(APIView):
     Attributes:
     - None
     """
-
+    throttle_classes = [AllThrottle]
     # получить мои заказы
+    @extend_schema(
+        description="Retrieve the details of user orders.",
+        responses={200: OrderSerializer(many=True)}
+    )
     def get(self, request, *args, **kwargs):
         """
                Retrieve the details of user orders.
@@ -713,6 +741,10 @@ class OrderView(APIView):
         return Response(serializer.data)
 
     # разместить заказ из корзины
+    @extend_schema(
+        description="Put an order and send a notification.",
+        responses={200: None}
+    )
     def post(self, request, *args, **kwargs):
         """
                Put an order and send a notification.
