@@ -151,7 +151,7 @@ REST_FRAMEWORK = {
     ),
 
     'DEFAULT_THROTTLE_CLASSES': (
-        'orders.throttles.LoginAccountThrottle'
+        'orders.throttles.AllThrottle'
     ),
 
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema'

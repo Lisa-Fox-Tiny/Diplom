@@ -219,6 +219,8 @@ class ShopView(ListAPIView):
     """
     Класс для просмотра списка магазинов
     """
+    throttle_classes = [AllThrottle]
+
     queryset = Shop.objects.filter(state=True)
     serializer_class = ShopSerializer
 
