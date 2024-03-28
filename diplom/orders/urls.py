@@ -1,11 +1,13 @@
-from django.urls import path
+from django.urls import path, include
 from django_rest_passwordreset.views import reset_password_request_token, reset_password_confirm
 from django.contrib import admin
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+from baton.autodiscover import admin
 
 from orders.views import PartnerUpdate, RegisterAccount, LoginAccount, CategoryView, ShopView, ProductInfoView, \
     BasketView, \
     AccountDetails, ContactView, OrderView, PartnerState, PartnerOrders, ConfirmAccount
+from . import views
 
 app_name = 'orders'
 urlpatterns = [
@@ -29,4 +31,5 @@ urlpatterns = [
     # Optional UI:
     path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    path('baton/', include('baton.urls')),
 ]

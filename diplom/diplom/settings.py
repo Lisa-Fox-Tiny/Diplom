@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from django.conf import settings
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -39,7 +40,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_rest_passwordreset',
     'orders',
-    'drf_spectacular'
+    'drf_spectacular',
+    'baton'
 ]
 
 MIDDLEWARE = [
@@ -167,3 +169,44 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/Moscow'
+
+
+BATON = {
+    'SITE_HEADER': '<img src="%sbaton/img/logo.png" />' % settings.STATIC_URL,
+    'SITE_TITLE': 'Baton',
+    'INDEX_TITLE': 'Site administration',
+    'CONFIRM_UNSAVED_CHANGES': True,
+    'SHOW_MULTIPART_UPLOADING': True,
+    'ENABLE_IMAGES_PREVIEW': True,
+    'CHANGELIST_FILTERS_IN_MODAL': True,
+    'CHANGELIST_FILTERS_ALWAYS_OPEN': False,
+    'CHANGELIST_FILTERS_FORM': True,
+    'COLLAPSABLE_USER_AREA': False,
+    'MENU_ALWAYS_COLLAPSED': False,
+    'MENU_TITLE': 'Menu',
+    'MESSAGES_TOASTS': False,
+    'GRAVATAR_DEFAULT_IMG': 'retro',
+    'GRAVATAR_ENABLED': True,
+    'FORCE_THEME': None,
+    'LOGIN_SPLASH': 'img/login-splash.png',
+    'MENU': (
+        { 'type': 'title', 'label': 'main', 'apps': ('auth', ) },
+        {
+            'type': 'ORDERS',
+            'name': 'auth',
+            'label': 'Authentication',
+            'icon': 'fa fa-lock',
+            'default_open': True,
+            'models': (
+                {
+                    'name': 'User',
+                    'label': 'Users'
+                },
+                {
+                    'name': 'group',
+                    'label': 'Groups'
+                },
+            )
+        },
+    ),
+}

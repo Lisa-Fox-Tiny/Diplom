@@ -16,6 +16,8 @@ from ujson import loads as load_json
 from yaml import load as load_yaml, Loader
 from drf_spectacular.utils import extend_schema
 from .throttles import AllThrottle
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 
 
 from orders.models import Shop, Category, Product, ProductInfo, Parameter, ProductParameter, Order, OrderItem, \
