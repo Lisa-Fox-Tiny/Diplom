@@ -1,7 +1,8 @@
 # Верстальщик
 from rest_framework import serializers
+from versatileimagefield.serializers import VersatileImageFieldSerializer
 
-from orders.models import User, Category, Shop, ProductInfo, Product, ProductParameter, OrderItem, Order, Contact
+from orders.models import User, Category, Shop, ProductInfo, Product, ProductParameter, OrderItem, Order, Contact, Person
 
 
 class ContactSerializer(serializers.ModelSerializer):
@@ -87,3 +88,23 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = ('id', 'ordered_items', 'state', 'dt', 'total_sum', 'contact',)
         read_only_fields = ('id',)
+
+
+class PersonSerializer(serializers.ModelSerializer):
+    """Serializes Person instances"""
+    headshot = VersatileImageFieldSerializer(
+        sizes=[
+            ('full_size', 'url'),
+            ('thumbnail', 'thumbnail__100x100'),
+            ('medium_square_crop', 'crop__400x400'),
+            ('small_square_crop', 'crop__50x50')
+        ]
+    )
+
+    class Meta:
+        model = Person
+        fields = (
+            'name_first',
+            'name_last',
+            'headshot'
+        )

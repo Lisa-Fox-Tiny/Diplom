@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'orders',
     'drf_spectacular',
-    'social_django'
+    'social_django',
+    'versatileimagefield'
 ]
 
 MIDDLEWARE = [
@@ -208,3 +209,13 @@ JET_THEMES = [
 ]
 
 JET_CHANGE_FORM_SIBLING_LINKS = True
+
+
+VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
+    'person_headshot': [
+        ('full_size', 'url'),
+        ('thumbnail', 'thumbnail__100x100'),
+        ('medium_square_crop', 'crop__400x400'),
+        ('small_square_crop', 'crop__50x50')
+    ]
+}

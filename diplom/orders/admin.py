@@ -80,3 +80,9 @@ class ContactAdmin(admin.ModelAdmin):
 class ConfirmEmailTokenAdmin(admin.ModelAdmin):
     list_display = ('user', 'key', 'created_at',)
 
+
+@admin.register(Person)
+class PersonAdmin(admin.ModelAdmin):
+    list_display = ('name_first', 'name_last', 'headshot')
+
+

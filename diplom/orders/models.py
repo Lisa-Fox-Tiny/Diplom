@@ -4,6 +4,7 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django_rest_passwordreset.tokens import get_token_generator
+from versatileimagefield.fields import VersatileImageField, PPOIField
 
 STATE_CHOICES = (
     ('basket', 'Статус корзины'),
@@ -304,3 +305,17 @@ class ConfirmEmailToken(models.Model):
         return "Password reset token for user {user}".format(user=self.user)
 
 
+class Person(models.Model):
+    """Represents a person."""
+    name_first = models.CharField('First Name', max_length=80)
+    name_last = models.CharField('Last Name', max_length=100)
+    headshot = VersatileImageField(
+        'Headshot',
+        upload_to='headshots/',
+        ppoi_field='headshot_ppoi'
+    )
+    headshot_ppoi = PPOIField()
+
+    class Meta:
+        verbose_name = 'Аватар пользователя'
+        verbose_name_plural = 'Аватары пользователей'
