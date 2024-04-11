@@ -16,8 +16,9 @@ from ujson import loads as load_json
 from yaml import load as load_yaml, Loader
 from drf_spectacular.utils import extend_schema
 from .throttles import AllThrottle
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 
 
 from orders.models import Shop, Category, Product, ProductInfo, Parameter, ProductParameter, Order, OrderItem, \
@@ -778,3 +779,10 @@ class OrderView(APIView):
                         return JsonResponse({'Status': True})
 
         return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
+
+
+@login_required
+def my_view(request):
+    # Если пользователь не аутентифицирован через Yandex, перенаправляем его на страницу аутентификации
+    if not request.user.social_auth.filter(provider='yandex-oauth2').exists():
+        return redirect('social:begin', 'yandex-oauth2')

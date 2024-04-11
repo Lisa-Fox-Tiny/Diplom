@@ -2,7 +2,6 @@ from django.urls import path, include
 from django_rest_passwordreset.views import reset_password_request_token, reset_password_confirm
 from django.contrib import admin
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
-from baton.autodiscover import admin
 
 from orders.views import PartnerUpdate, RegisterAccount, LoginAccount, CategoryView, ShopView, ProductInfoView, \
     BasketView, \
@@ -26,10 +25,11 @@ urlpatterns = [
     path('products', ProductInfoView.as_view(), name='shops'),
     path('basket', BasketView.as_view(), name='basket'),
     path('order', OrderView.as_view(), name='order'),
+    path('jet/', include('jet.urls', 'jet')),
     path('admin/', admin.site.urls),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     # Optional UI:
     path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
-    path('baton/', include('baton.urls')),
+    path('auth/', include('social_django.urls', namespace='social')),
 ]

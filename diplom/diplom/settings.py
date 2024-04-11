@@ -30,7 +30,6 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -39,9 +38,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django_rest_passwordreset',
+    'jet',
+    'django.contrib.admin',
     'orders',
     'drf_spectacular',
-    'baton'
+    'social_django'
 ]
 
 MIDDLEWARE = [
@@ -68,6 +69,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request'
             ],
         },
     },
@@ -84,7 +86,6 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-
 
 }
 
@@ -170,43 +171,40 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/Moscow'
 
+SOCIAL_AUTH_YANDEX_OAUTH2_KEY = 'ed6c97f0cb6442b18cb011cc09fd3097'
+SOCIAL_AUTH_YANDEX_OAUTH2_SECRET = '30c6c7398b0f4d0a94ff7656624d14e7'
 
-BATON = {
-    'SITE_HEADER': '<img src="%sbaton/img/logo.png" />' % settings.STATIC_URL,
-    'SITE_TITLE': 'Baton',
-    'INDEX_TITLE': 'Site administration',
-    'CONFIRM_UNSAVED_CHANGES': True,
-    'SHOW_MULTIPART_UPLOADING': True,
-    'ENABLE_IMAGES_PREVIEW': True,
-    'CHANGELIST_FILTERS_IN_MODAL': True,
-    'CHANGELIST_FILTERS_ALWAYS_OPEN': False,
-    'CHANGELIST_FILTERS_FORM': True,
-    'COLLAPSABLE_USER_AREA': False,
-    'MENU_ALWAYS_COLLAPSED': False,
-    'MENU_TITLE': 'Menu',
-    'MESSAGES_TOASTS': False,
-    'GRAVATAR_DEFAULT_IMG': 'retro',
-    'GRAVATAR_ENABLED': True,
-    'FORCE_THEME': None,
-    'LOGIN_SPLASH': 'img/login-splash.png',
-    'MENU': (
-        { 'type': 'title', 'label': 'main', 'apps': ('auth', ) },
-        {
-            'type': 'ORDERS',
-            'name': 'auth',
-            'label': 'Authentication',
-            'icon': 'fa fa-lock',
-            'default_open': True,
-            'models': (
-                {
-                    'name': 'User',
-                    'label': 'Users'
-                },
-                {
-                    'name': 'group',
-                    'label': 'Groups'
-                },
-            )
-        },
-    ),
-}
+JET_THEMES = [
+    {
+        'theme': 'default', # theme folder name
+        'color': '#47bac1', # color of the theme's button in user menu
+        'title': 'Default' # theme title
+    },
+    {
+        'theme': 'green',
+        'color': '#44b78b',
+        'title': 'Green'
+    },
+    {
+        'theme': 'light-green',
+        'color': '#2faa60',
+        'title': 'Light Green'
+    },
+    {
+        'theme': 'light-violet',
+        'color': '#a464c4',
+        'title': 'Light Violet'
+    },
+    {
+        'theme': 'light-blue',
+        'color': '#5EADDE',
+        'title': 'Light Blue'
+    },
+    {
+        'theme': 'light-gray',
+        'color': '#222',
+        'title': 'Light Gray'
+    }
+]
+
+JET_CHANGE_FORM_SIBLING_LINKS = True
