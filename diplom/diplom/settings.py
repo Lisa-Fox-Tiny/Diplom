@@ -9,8 +9,9 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
+import sentry_sdk
 import os
+from sentry_sdk.integrations.django import DjangoIntegration
 from django.conf import settings
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -172,8 +173,8 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/Moscow'
 
-SOCIAL_AUTH_YANDEX_OAUTH2_KEY = 'ed6c97f0cb6442b18cb011cc09fd3097'
-SOCIAL_AUTH_YANDEX_OAUTH2_SECRET = '30c6c7398b0f4d0a94ff7656624d14e7'
+SOCIAL_AUTH_YANDEX_OAUTH2_KEY = ''
+SOCIAL_AUTH_YANDEX_OAUTH2_SECRET = ''
 
 JET_THEMES = [
     {
@@ -219,3 +220,16 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
         ('small_square_crop', 'crop__50x50')
     ]
 }
+
+
+sentry_sdk.init(
+    dsn="",
+    integrations=[DjangoIntegration()],
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    traces_sample_rate=1.0,
+    # Set profiles_sample_rate to 1.0 to profile 100%
+    # of sampled transactions.
+    # We recommend adjusting this value in production.
+    profiles_sample_rate=1.0,
+)

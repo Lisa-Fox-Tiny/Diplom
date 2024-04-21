@@ -6,10 +6,15 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, Spec
 from orders.views import PartnerUpdate, RegisterAccount, LoginAccount, CategoryView, ShopView, ProductInfoView, \
     BasketView, \
     AccountDetails, ContactView, OrderView, PartnerState, PartnerOrders, ConfirmAccount
-from . import views
+
+
+def trigger_error(request):
+    division_by_zero = 1 / 0
+
 
 app_name = 'orders'
 urlpatterns = [
+    path('sentry-debug/', trigger_error),
     path('partner/update', PartnerUpdate.as_view(), name='partner-update'),
     path('partner/state', PartnerState.as_view(), name='partner-state'),
     path('partner/orders', PartnerOrders.as_view(), name='partner-orders'),
